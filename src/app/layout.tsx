@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from '@clerk/nextjs';
 import { Toaster } from "@/components/ui/sonner";
+import { validateEnv } from "@/lib/validateEnv";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,6 +25,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  if (process.env.NODE_ENV !== "production") {
+    // Run once on server startup in development to surface missing envs
+    validateEnv();
+  }
   return (
     <ClerkProvider>
       <html lang="en">
